@@ -3,15 +3,21 @@ name: URDF Validation
 on: [push, pull_request]
 
 jobs:
-  validate:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v3
 
-      - name: Install Tools
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y liburdfdom-tools
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
 
-      - name: Run Check
-        run: check_urdf humanoid_skeleton.urdf
+      - name: Install liburdfdom-tools
+        run: sudo apt-get update && sudo apt-get install -y liburdfdom-tools
+
+      - name: Run Official URDF Check
+        run: check_urdf humanoid_proto.urdf
+
+      - name: Run Custom Physics Validation
+        run: python scripts/validate_inertia.py
