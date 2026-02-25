@@ -14,7 +14,6 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y liburdfdom-tools
 
-      - name: Run check_urdf
-        run: |
-          # Make sure this matches your actual .urdf filename!
-          check_urdf humanoid_skeleton.urdf
+     name: Run check_urdf
+    run: |
+      check_urdf YOUR_ACTUAL_FILENAME_HERE.urdf
