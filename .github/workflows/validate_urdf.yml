@@ -1,6 +1,10 @@
 name: URDF Validation
 
-on: [push, pull_request]
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
   validate:
@@ -14,6 +18,6 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y liburdfdom-tools
 
-     name: Run check_urdf
-    run: |
-      check_urdf YOUR_ACTUAL_FILENAME_HERE.urdf
+      - name: Run check_urdf
+        run: |
+          check_urdf humanoid_skeleton.urdf
