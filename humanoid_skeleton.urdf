@@ -101,3 +101,34 @@
   </joint>
 
 </robot>
+<link name="l_foot">
+    <collision>
+      <geometry><box size="0.1 0.08 0.02"/></geometry>
+    </collision>
+    <visual>
+      <geometry><box size="0.1 0.08 0.02"/></geometry>
+      <material name="black"><color rgba="0 0 0 1"/></material>
+    </visual>
+  </link>
+
+  <joint name="l_ankle" type="fixed">
+    <parent link="l_thigh"/>
+    <child link="l_foot"/>
+    <origin xyz="0 0 -0.31" rpy="0 0 0"/>
+  </joint>
+
+  <link name="r_foot">
+    <collision>
+      <geometry><box size="0.1 0.08 0.02"/></geometry>
+    </collision>
+    <visual>
+      <geometry><box size="0.1 0.08 0.02"/></geometry>
+      <material name="black"><color rgba="0 0 0 1"/></material>
+    </visual>
+  </link>
+
+  <joint name="r_ankle" type="fixed">
+    <parent link="r_thigh"/>
+    <child link="r_foot"/>
+    <origin xyz="0 0 -0.31" rpy="0 0 0"/>
+  </joint>
