@@ -1,0 +1,20 @@
+name: URDF Validation
+
+on: [push, pull_request]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install URDF Tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y liburdfdom-tools
+
+      - name: Run check_urdf
+        run: |
+          # Make sure this matches your actual .urdf filename!
+          check_urdf humanoid_skeleton.urdf
