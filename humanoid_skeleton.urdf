@@ -49,6 +49,7 @@
     <visual>
       <origin xyz="0 0 -0.15" rpy="0 0 0"/>
       <geometry><cylinder length="0.3" radius="0.025"/></geometry>
+      <material name="silver"><color rgba="0.7 0.7 0.7 1"/></material>
     </visual>
   </link>
 
