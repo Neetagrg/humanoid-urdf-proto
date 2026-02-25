@@ -28,10 +28,10 @@
 
   <joint name="l_hip_pitch" type="revolute">
     <parent link="torso"/>
-    <child link="l_hip_pitch_link"/>
+    <child burial="l_hip_pitch_link"/>
     <origin xyz="0 0.08 0" rpy="0 0 0"/>
     <axis xyz="0 1 0"/>
-    <limit effort="10" lower="-1.5" upper="1.5" velocity="1.0"/>
+    <limit effort="20.0" lower="-1.571" upper="0.523" velocity="3.0"/>
   </joint>
 
   <link name="l_thigh">
@@ -41,18 +41,18 @@
       <material name="silver"><color rgba="0.7 0.7 0.7 1"/></material>
     </visual>
     <inertial>
-      <mass value="1.0"/>
+      <mass value="0.5"/>
       <origin xyz="0 0 -0.15"/>
-      <inertia ixx="0.007" ixy="0" ixz="0" iyy="0.007" iyz="0" izz="0.001"/>
+      <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.008" iyz="0" izz="0.005"/>
     </inertial>
   </link>
 
   <joint name="l_knee" type="revolute">
     <parent link="l_hip_pitch_link"/>
     <child link="l_thigh"/>
-    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <origin xyz="0 0 -0.05" rpy="0 0 0"/>
     <axis xyz="0 1 0"/>
-    <limit effort="10" lower="0" upper="2.0" velocity="1.0"/>
+    <limit effort="15.0" lower="0.0" upper="2.618" velocity="3.0"/>
   </joint>
 
 </robot>
