@@ -1,8 +1,6 @@
 <?xml version="1.0"?>
 <robot name="ardupilot_humanoid">
-
   <link name="base_link"/>
-
   <link name="torso">
     <inertial>
       <origin xyz="0 0 0.150" rpy="0 0 0"/>
@@ -14,132 +12,7 @@
       <material name="grey"><color rgba="0.5 0.5 0.5 1"/></material>
     </visual>
   </link>
-
   <joint name="base_to_torso" type="fixed">
-    <parent link="base_link"/>
-    <child link="torso"/>
-    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <parent link="base_link"/><child link="torso"/><origin xyz="0 0 0" rpy="0 0 0"/>
   </joint>
-
-  <link name="l_hip_pitch_link">
-    <inertial>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
-      <mass value="0.100"/>
-      <inertia ixx="0.0001" ixy="0" ixz="0" iyy="0.0001" iyz="0" izz="0.0001"/>
-    </inertial>
-    <visual>
-      <geometry><sphere radius="0.03"/></geometry>
-    </visual>
-  </link>
-
-  <joint name="l_hip_pitch" type="revolute">
-    <parent link="torso"/>
-    <child link="l_hip_pitch_link"/>
-    <origin xyz="0 0.080 0" rpy="0 0 0"/>
-    <axis xyz="0 1 0"/>
-    <limit effort="20.0" lower="-1.571" upper="0.523" velocity="3.0"/>
-  </joint>
-
-  <link name="l_thigh">
-    <inertial>
-      <origin xyz="0 0 -0.150" rpy="0 0 0"/>
-      <mass value="0.500"/>
-      <inertia ixx="0.010" ixy="0" ixz="0" iyy="0.008" iyz="0" izz="0.005"/>
-    </inertial>
-    <visual>
-      <origin xyz="0 0 -0.150" rpy="0 0 0"/>
-      <geometry><cylinder length="0.3" radius="0.025"/></geometry>
-      <material name="silver"><color rgba="0.7 0.7 0.7 1"/></material>
-    </visual>
-  </link>
-
-  <joint name="l_knee" type="revolute">
-    <parent link="l_hip_pitch_link"/>
-    <child link="l_thigh"/>
-    <origin xyz="0 0 -0.050" rpy="0 0 0"/>
-    <axis xyz="0 1 0"/>
-    <limit effort="15.0" lower="0.0" upper="2.618" velocity="3.0"/>
-  </joint>
-
-  <link name="l_foot">
-    <inertial>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
-      <mass value="0.100"/>
-      <inertia ixx="0.0001" ixy="0" ixz="0" iyy="0.0001" iyz="0" izz="0.0001"/>
-    </inertial>
-    <collision>
-      <geometry><box size="0.1 0.08 0.02"/></geometry>
-    </collision>
-    <visual>
-      <geometry><box size="0.1 0.08 0.02"/></geometry>
-      <material name="black"><color rgba="0 0 0 1"/></material>
-    </visual>
-  </link>
-
-  <joint name="l_ankle" type="fixed">
-    <parent link="l_thigh"/>
-    <child link="l_foot"/>
-    <origin xyz="0 0 -0.310" rpy="0 0 0"/>
-  </joint>
-  <link name="r_hip_pitch_link">
-    <inertial>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
-      <mass value="0.100"/>
-      <inertia ixx="0.0001" ixy="0" ixz="0" iyy="0.0001" iyz="0" izz="0.0001"/>
-    </inertial>
-    <visual>
-      <geometry><sphere radius="0.03"/></geometry>
-    </visual>
-  </link>
-
-  <joint name="r_hip_pitch" type="revolute">
-    <parent link="torso"/>
-    <child link="r_hip_pitch_link"/>
-    <origin xyz="0 -0.080 0" rpy="0 0 0"/>
-    <axis xyz="0 1 0"/>
-    <limit effort="20.0" lower="-1.571" upper="0.523" velocity="3.0"/>
-  </joint>
-
-  <link name="r_thigh">
-    <inertial>
-      <origin xyz="0 0 -0.150" rpy="0 0 0"/>
-      <mass value="0.500"/>
-      <inertia ixx="0.010" ixy="0" ixz="0" iyy="0.008" iyz="0" izz="0.005"/>
-    </inertial>
-    <visual>
-      <origin xyz="0 0 -0.150" rpy="0 0 0"/>
-      <geometry><cylinder length="0.3" radius="0.025"/></geometry>
-      <material name="silver"><color rgba="0.7 0.7 0.7 1"/></material>
-    </visual>
-  </link>
-
-  <joint name="r_knee" type="revolute">
-    <parent link="r_hip_pitch_link"/>
-    <child link="r_thigh"/>
-    <origin xyz="0 0 -0.050" rpy="0 0 0"/>
-    <axis xyz="0 1 0"/>
-    <limit effort="15.0" lower="0.0" upper="2.618" velocity="3.0"/>
-  </joint>
-
-  <link name="r_foot">
-    <inertial>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
-      <mass value="0.100"/>
-      <inertia ixx="0.0001" ixy="0" ixz="0" iyy="0.0001" iyz="0" izz="0.0001"/>
-    </inertial>
-    <collision>
-      <geometry><box size="0.1 0.08 0.02"/></geometry>
-    </collision>
-    <visual>
-      <geometry><box size="0.1 0.08 0.02"/></geometry>
-      <material name="black"><color rgba="0 0 0 1"/></material>
-    </visual>
-  </link>
-
-  <joint name="r_ankle" type="fixed">
-    <parent link="r_thigh"/>
-    <child link="r_foot"/>
-    <origin xyz="0 0 -0.310" rpy="0 0 0"/>
-  </joint>
-
-</robot>
+  </robot>
