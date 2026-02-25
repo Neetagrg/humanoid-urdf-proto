@@ -38,10 +38,10 @@ The validation script ensures:
 
 ## Control System Design Notes
 
-### 🎯 Why 3-decimal Precision?
+###  Why 3-decimal Precision?
 All radian limits and inertial origins are specified to $10^{-3}$ precision. This matches ArduPilot’s internal floating-point handling for `MAV_CMD_DO_SET_SERVO`, ensuring that simulation commands don't experience "rounding jitter" which can destabilize high-frequency (400Hz) balance loops.
 
-### 🧠 Inertial Symmetry & EKF3
+###  Inertial Symmetry & EKF3
 The `base_link` origin is strictly aligned with the geometric center of the torso. This allows the ArduPilot EKF3 (Extended Kalman Filter) to have a zero-offset primary IMU position, reducing the computational overhead of "lever-arm" compensations during rapid pitch/roll transients.
 
 ---
