@@ -1,12 +1,17 @@
 import xml.etree.ElementTree as ET
 import sys
+import os
 
 def validate_urdf_physics(file_path):
+    if not os.path.exists(file_path):
+        print(f"❌ Error: File not found at {file_path}")
+        sys.exit(1)
+        
     tree = ET.parse(file_path)
     root = tree.getroot()
     links_passed = 0
     
-    print(f"--- Validating Physics for {file_path} ---")
+    print(f"--- Validating Physics for {os.path.basename(file_path)} ---")
     
     for link in root.findall('link'):
         inertial = link.find('inertial/inertia')
@@ -26,9 +31,12 @@ def validate_urdf_physics(file_path):
             else:
                 print(f"❌ {link.get('name')}: INVALID INERTIA TENSOR")
                 print(f"   Values: ixx={ixx}, iyy={iyy}, izz={izz}")
-                sys.exit(1) # Fail the CI/CD build
+                sys.exit(1)
 
     print(f"--- Validation Complete: {links_passed} links verified ---")
 
 if __name__ == "__main__":
-    validate_urdf_physics('humanoid_proto.urdf')
+    # This logic finds the file in the same folder as the /scripts directory
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    urdf_path = os.path.join(script_dir, '..', 'humanoid_proto.urdf')
+    validate_urdf_physics(urdf_path)
