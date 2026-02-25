@@ -1,0 +1,1 @@
+[![URDF Validation](https://github.com/Neetagrg/humanoid-urdf-proto/actions/workflows/validate_urdf.yml/badge.svg)](https://github.com/Neetagrg/humanoid-urdf-proto/actions)
