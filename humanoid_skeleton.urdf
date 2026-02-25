@@ -61,6 +61,22 @@
     <limit effort="15.0" lower="0.0" upper="2.618" velocity="3.0"/>
   </joint>
 
+  <link name="l_foot">
+    <collision>
+      <geometry><box size="0.1 0.08 0.02"/></geometry>
+    </collision>
+    <visual>
+      <geometry><box size="0.1 0.08 0.02"/></geometry>
+      <material name="black"><color rgba="0 0 0 1"/></material>
+    </visual>
+  </link>
+
+  <joint name="l_ankle" type="fixed">
+    <parent link="l_thigh"/>
+    <child link="l_foot"/>
+    <origin xyz="0 0 -0.31" rpy="0 0 0"/>
+  </joint>
+
   <link name="r_hip_pitch_link">
     <inertial>
       <origin xyz="0 0 0" rpy="0 0 0"/>
@@ -75,7 +91,8 @@
   <joint name="r_hip_pitch" type="revolute">
     <parent link="torso"/>
     <child link="r_hip_pitch_link"/>
-    <origin xyz="0 -0.08 0" rpy="0 0 0"/> <axis xyz="0 1 0"/>
+    <origin xyz="0 -0.08 0" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
     <limit effort="20.0" lower="-1.571" upper="0.523" velocity="3.0"/>
   </joint>
 
@@ -92,29 +109,12 @@
     </visual>
   </link>
 
-  <joint name="r_knee" type="revolute">
+  <<joint name="r_knee" type="revolute">
     <parent link="r_hip_pitch_link"/>
-    <child name="r_thigh"/>
+    <child link="r_thigh"/>
     <origin xyz="0 0 -0.05" rpy="0 0 0"/>
     <axis xyz="0 1 0"/>
     <limit effort="15.0" lower="0.0" upper="2.618" velocity="3.0"/>
-  </joint>
-
-</robot>
-<link name="l_foot">
-    <collision>
-      <geometry><box size="0.1 0.08 0.02"/></geometry>
-    </collision>
-    <visual>
-      <geometry><box size="0.1 0.08 0.02"/></geometry>
-      <material name="black"><color rgba="0 0 0 1"/></material>
-    </visual>
-  </link>
-
-  <joint name="l_ankle" type="fixed">
-    <parent link="l_thigh"/>
-    <child link="l_foot"/>
-    <origin xyz="0 0 -0.31" rpy="0 0 0"/>
   </joint>
 
   <link name="r_foot">
@@ -132,3 +132,5 @@
     <child link="r_foot"/>
     <origin xyz="0 0 -0.31" rpy="0 0 0"/>
   </joint>
+
+</robot>
