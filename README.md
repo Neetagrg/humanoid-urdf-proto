@@ -15,3 +15,9 @@ The humanoid follows a modular branching structure. Each limb is defined by a ch
 
 ### Coordinate Frames
 All joints follow the **Right-Hand Rule**. The Z-axis points upward (Normal to ground), and the X-axis points forward (Direction of travel). This alignment is critical for ArduPilot's EKF3 navigation filters to interpret IMU data correctly.
+## Roadmap
+
+* [x] **Symmetry Implementation:** Mirroring the left leg chain to the right side (`r_hip`, `r_knee`).
+* [ ] **Foot Contact Points:** Defining collision primitives for ground-plane interaction.
+* [ ] **ArduPilot Plugin:** Mapping URDF joint names to ArduPilot `SERVOx_FUNCTION` outputs.
+* [ ] **Physics Engine Integration:** Direct support for Gazebo/Webots for dynamic gait analysis.
