@@ -1,23 +1,13 @@
 name: URDF Validation
-
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-
+on: [push, pull_request]
 jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-
-      - name: Install URDF Tools
+      - uses: actions/checkout@v4
+      - name: Install Tools
         run: |
           sudo apt-get update
           sudo apt-get install -y liburdfdom-tools
-
-      - name: Run check_urdf
-        run: |
-          check_urdf humanoid_skeleton.urdf
+      - name: Run Check
+        run: check_urdf humanoid_skeleton.urdf
