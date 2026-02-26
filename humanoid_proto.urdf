@@ -142,5 +142,35 @@
     <child link="r_foot"/>
     <origin xyz="0 0 -0.310" rpy="0 0 0"/>
   </joint>
+<link name="head">
+    <inertial>
+      <origin xyz="0 0 0.05" rpy="0 0 0"/>
+      <mass value="0.2"/>
+      <inertia ixx="0.0001" ixy="0" ixz="0" iyy="0.0001" iyz="0" izz="0.0001"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0.05" rpy="0 0 0"/>
+      <geometry><sphere radius="0.05"/></geometry>
+      <material name="white"><color rgba="1 1 1 1"/></material>
+    </visual>
+  </link>
 
+  <joint name="torso_to_head" type="fixed">
+    <parent link="torso"/>
+    <child link="head"/>
+    <origin xyz="0 0 0.3" rpy="0 0 0"/>
+  </joint>
+
+  <link name="imu_link">
+    <inertial>
+      <mass value="0.01"/>
+      <inertia ixx="1e-5" ixy="0" ixz="0" iyy="1e-5" iyz="0" izz="1e-5"/>
+    </inertial>
+  </link>
+
+  <joint name="head_to_imu" type="fixed">
+    <parent link="head"/>
+    <child link="imu_link"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/> 
+    </joint>
 </robot>
