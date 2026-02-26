@@ -51,3 +51,8 @@ The `base_link` origin is strictly aligned with the geometric center of the tors
 * [ ] **Foot Contact Points:** Defining collision primitives for ground-plane interaction.
 * [ ] **ArduPilot Plugin:** Mapping URDF joint names to ArduPilot `SERVOx_FUNCTION` outputs.
 * [ ] **Physics Engine Integration:** Direct support for Gazebo/Webots for dynamic gait analysis.
+
+## Physical Specifications
+* **Total Mass:** 3.900 kg
+* **Center of Mass (CoM):** [0.000, 0.000, 0.058]
+* **Symmetry:** Verified Sagittal Symmetry (Lateral Offset < 0.001m)

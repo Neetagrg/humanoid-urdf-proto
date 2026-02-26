@@ -1,17 +1,23 @@
 name: URDF Validation
+
 on: [push, pull_request]
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.x'
+          python-version: '3.13' 
+
       - name: Install liburdfdom-tools
         run: sudo apt-get update && sudo apt-get install -y liburdfdom-tools
+
       - name: Run Official URDF Check
         run: check_urdf humanoid_proto.urdf
+
       - name: Run Custom Physics Validation
-        run: python scripts/validate_inertia.py
+        run: python3 scripts/validate_inertia.py # Used python3 for consistency
