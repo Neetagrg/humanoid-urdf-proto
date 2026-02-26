@@ -13,11 +13,18 @@ def calculate_com(urdf_file):
     for link in root.findall('link'):
         inertial = link.find('inertial')
         if inertial is not None:
-            mass = float(inertial.find('mass').get('value'))
+            mass_elem = inertial.find('mass')
+            if mass_elem is None: continue
+            
+            mass = float(mass_elem.get('value', 0))
             origin = inertial.find('origin')
             
-            # Get origin xyz, default to 0 if not specified
-            xyz = origin.get('xyz', '0 0 0').split()
+            # If origin is missing, default to 0 0 0
+            if origin is not None:
+                xyz = origin.get('xyz', '0 0 0').split()
+            else:
+                xyz = ['0', '0', '0']
+                
             x, y, z = map(float, xyz)
 
             total_mass += mass
@@ -37,7 +44,7 @@ def calculate_com(urdf_file):
         print("-" * 50)
         
         if abs(com_y) > 0.01:
-            print("⚠️ WARNING: Lateral CoM (Y) is not centered! Robot may lean.")
+            print("⚠️ WARNING: Lateral CoM (Y) is not centered!")
         else:
             print("✅ Lateral Symmetry Verified (Y-axis is centered).")
 
