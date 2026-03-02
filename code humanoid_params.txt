@@ -1,0 +1,18 @@
+# ArduHumanoid Joint-to-Servo Mapping (12-DOF)
+# Reference: GSoC 2026 ArduHumanoid Proposal
+SERVO1_FUNCTION  1     # Left Hip Pitch (Standard PWM)
+SERVO2_FUNCTION  1     # Left Knee
+SERVO3_FUNCTION  1     # Left Ankle
+SERVO4_FUNCTION  1     # Right Hip Pitch
+SERVO5_FUNCTION  1     # Right Knee
+SERVO6_FUNCTION  1     # Right Ankle
+SERVO7_FUNCTION  1     # Left Arm Shoulder
+SERVO8_FUNCTION  1     # Right Arm Shoulder
+
+# Power Management (Shawn/xfacta Standards)
+# Based on 12S LiPo (44.4V Nominal)
+BATT_MONITOR     4     # Analog Voltage and Current
+BATT_VOLT_PIN    13    # Standard Pixhawk mapping
+BATT_CURR_PIN    14
+BATT_LOW_VOLT    43.2  # 3.6V per cell warning
+BATT_CRT_VOLT    42.0  # 3.5V per cell critical failsafe

@@ -1,18 +1,39 @@
 <?xml version="1.0"?>
+<!--
+  humanoid_proto.urdf  —  ArduPilot SITL
+  Fixes applied vs original:
+    1. IMU moved from head to torso CoM (eliminates 0.35 m EKF3 lever-arm error)
+    2. Ankle joint Z-offset corrected −0.300 m (was −0.310, 10 mm past end of thigh)
+    3. Collision geometry added to l_thigh / r_thigh (prevents fall-through)
+    4. Head inertia corrected to physical value for 0.2 kg, r=0.05 m sphere
+    5. Thigh inertia corrected to physical thin-rod estimate for 0.5 kg, 0.3 m cylinder
+    6. CoM validation script updated separately (joint-transform-aware)
+-->
 <robot name="ardupilot_humanoid">
 
+  <!-- ═══════════════════════════════════════════
+       BASE
+  ═══════════════════════════════════════════ -->
   <link name="base_link"/>
 
+  <!-- ═══════════════════════════════════════════
+       TORSO
+  ═══════════════════════════════════════════ -->
   <link name="torso">
     <inertial>
       <origin xyz="0 0 0.150" rpy="0 0 0"/>
       <mass value="2.500"/>
-      <inertia ixx="0.020" ixy="0" ixz="0" iyy="0.020" iyz="0" izz="0.010"/>
+      <inertia ixx="0.020" ixy="0" ixz="0"
+               iyy="0.020" iyz="0"
+               izz="0.010"/>
     </inertial>
     <visual>
       <geometry><box size="0.15 0.1 0.3"/></geometry>
       <material name="grey"><color rgba="0.5 0.5 0.5 1"/></material>
     </visual>
+    <collision>
+      <geometry><box size="0.15 0.1 0.3"/></geometry>
+    </collision>
   </link>
 
   <joint name="base_to_torso" type="fixed">
@@ -21,15 +42,76 @@
     <origin xyz="0 0 0" rpy="0 0 0"/>
   </joint>
 
+  <!-- ═══════════════════════════════════════════
+       IMU  —  FIX 1: at torso CoM, not on head
+       Set INS_POS1_X/Y/Z = 0 0 0 in ArduPilot params.
+  ═══════════════════════════════════════════ -->
+  <link name="imu_link">
+    <inertial>
+      <mass value="0.01"/>
+      <inertia ixx="1e-5" ixy="0" ixz="0"
+               iyy="1e-5" iyz="0"
+               izz="1e-5"/>
+    </inertial>
+  </link>
+
+  <joint name="torso_to_imu" type="fixed">
+    <parent link="torso"/>
+    <child link="imu_link"/>
+    <!-- Coincides with torso CoM → zero lever arm for EKF3 -->
+    <origin xyz="0 0 0.150" rpy="0 0 0"/>
+  </joint>
+
+  <!-- ═══════════════════════════════════════════
+       HEAD  (decoupled from IMU now)
+  ═══════════════════════════════════════════ -->
+  <link name="head">
+    <inertial>
+      <origin xyz="0 0 0.05" rpy="0 0 0"/>
+      <mass value="0.200"/>
+      <!--
+        FIX 4: I = 2/5 · m · r² = 2/5 · 0.2 · 0.0025 = 0.0002 kg·m²
+        Original 0.0001 was 10× too low.
+      -->
+      <inertia ixx="0.0002" ixy="0" ixz="0"
+               iyy="0.0002" iyz="0"
+               izz="0.0002"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0.05" rpy="0 0 0"/>
+      <geometry><sphere radius="0.05"/></geometry>
+      <material name="white"><color rgba="1 1 1 1"/></material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0.05" rpy="0 0 0"/>
+      <geometry><sphere radius="0.05"/></geometry>
+    </collision>
+  </link>
+
+  <joint name="torso_to_head" type="fixed">
+    <parent link="torso"/>
+    <child link="head"/>
+    <origin xyz="0 0 0.3" rpy="0 0 0"/>
+  </joint>
+
+  <!-- ═══════════════════════════════════════════
+       LEFT LEG
+  ═══════════════════════════════════════════ -->
   <link name="l_hip_pitch_link">
     <inertial>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <mass value="0.100"/>
-      <inertia ixx="0.0001" ixy="0" ixz="0" iyy="0.0001" iyz="0" izz="0.0001"/>
+      <!-- Kept 0.0001 (2.8× physical) for ODE solver stability margin -->
+      <inertia ixx="0.0001" ixy="0" ixz="0"
+               iyy="0.0001" iyz="0"
+               izz="0.0001"/>
     </inertial>
     <visual>
       <geometry><sphere radius="0.03"/></geometry>
     </visual>
+    <collision>
+      <geometry><sphere radius="0.03"/></geometry>
+    </collision>
   </link>
 
   <joint name="l_hip_pitch" type="revolute">
@@ -38,19 +120,32 @@
     <origin xyz="0 0.080 0" rpy="0 0 0"/>
     <axis xyz="0 1 0"/>
     <limit effort="20.0" lower="-1.571" upper="0.523" velocity="3.0"/>
+    <dynamics damping="0.01" friction="0.001"/>
   </joint>
 
   <link name="l_thigh">
     <inertial>
       <origin xyz="0 0 -0.150" rpy="0 0 0"/>
       <mass value="0.500"/>
-      <inertia ixx="0.010" ixy="0" ixz="0" iyy="0.008" iyz="0" izz="0.005"/>
+      <!--
+        FIX 5: Thin-rod formula  Ixx=Iyy = mL²/12 = 0.5·0.09/12 = 0.00375
+                                  Izz = mr²/2 = 0.5·0.000625/2 = 0.000156
+        Original Ixx=0.010 was 2.7× too high → sluggish sim dynamics.
+      -->
+      <inertia ixx="0.00375" ixy="0" ixz="0"
+               iyy="0.00375" iyz="0"
+               izz="0.000156"/>
     </inertial>
     <visual>
       <origin xyz="0 0 -0.150" rpy="0 0 0"/>
       <geometry><cylinder length="0.3" radius="0.025"/></geometry>
       <material name="silver"><color rgba="0.7 0.7 0.7 1"/></material>
     </visual>
+    <!-- FIX 3: collision added — prevents leg fall-through -->
+    <collision>
+      <origin xyz="0 0 -0.150" rpy="0 0 0"/>
+      <geometry><cylinder length="0.3" radius="0.025"/></geometry>
+    </collision>
   </link>
 
   <joint name="l_knee" type="revolute">
@@ -59,13 +154,16 @@
     <origin xyz="0 0 -0.050" rpy="0 0 0"/>
     <axis xyz="0 1 0"/>
     <limit effort="15.0" lower="0.0" upper="2.618" velocity="3.0"/>
+    <dynamics damping="0.01" friction="0.001"/>
   </joint>
 
   <link name="l_foot">
     <inertial>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <mass value="0.100"/>
-      <inertia ixx="0.0001" ixy="0" ixz="0" iyy="0.0001" iyz="0" izz="0.0001"/>
+      <inertia ixx="0.0001" ixy="0" ixz="0"
+               iyy="0.0001" iyz="0"
+               izz="0.0001"/>
     </inertial>
     <collision>
       <geometry><box size="0.1 0.08 0.02"/></geometry>
@@ -79,18 +177,27 @@
   <joint name="l_ankle" type="fixed">
     <parent link="l_thigh"/>
     <child link="l_foot"/>
-    <origin xyz="0 0 -0.310" rpy="0 0 0"/>
+    <!-- FIX 2: was -0.310, corrected to -0.300 (end of 0.3 m cylinder) -->
+    <origin xyz="0 0 -0.300" rpy="0 0 0"/>
   </joint>
 
+  <!-- ═══════════════════════════════════════════
+       RIGHT LEG  (mirror of left)
+  ═══════════════════════════════════════════ -->
   <link name="r_hip_pitch_link">
     <inertial>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <mass value="0.100"/>
-      <inertia ixx="0.0001" ixy="0" ixz="0" iyy="0.0001" iyz="0" izz="0.0001"/>
+      <inertia ixx="0.0001" ixy="0" ixz="0"
+               iyy="0.0001" iyz="0"
+               izz="0.0001"/>
     </inertial>
     <visual>
       <geometry><sphere radius="0.03"/></geometry>
     </visual>
+    <collision>
+      <geometry><sphere radius="0.03"/></geometry>
+    </collision>
   </link>
 
   <joint name="r_hip_pitch" type="revolute">
@@ -99,19 +206,28 @@
     <origin xyz="0 -0.080 0" rpy="0 0 0"/>
     <axis xyz="0 1 0"/>
     <limit effort="20.0" lower="-1.571" upper="0.523" velocity="3.0"/>
+    <dynamics damping="0.01" friction="0.001"/>
   </joint>
 
   <link name="r_thigh">
     <inertial>
       <origin xyz="0 0 -0.150" rpy="0 0 0"/>
       <mass value="0.500"/>
-      <inertia ixx="0.010" ixy="0" ixz="0" iyy="0.008" iyz="0" izz="0.005"/>
+      <!-- FIX 5: same correction as l_thigh -->
+      <inertia ixx="0.00375" ixy="0" ixz="0"
+               iyy="0.00375" iyz="0"
+               izz="0.000156"/>
     </inertial>
     <visual>
       <origin xyz="0 0 -0.150" rpy="0 0 0"/>
       <geometry><cylinder length="0.3" radius="0.025"/></geometry>
       <material name="silver"><color rgba="0.7 0.7 0.7 1"/></material>
     </visual>
+    <!-- FIX 3: collision added -->
+    <collision>
+      <origin xyz="0 0 -0.150" rpy="0 0 0"/>
+      <geometry><cylinder length="0.3" radius="0.025"/></geometry>
+    </collision>
   </link>
 
   <joint name="r_knee" type="revolute">
@@ -120,13 +236,16 @@
     <origin xyz="0 0 -0.050" rpy="0 0 0"/>
     <axis xyz="0 1 0"/>
     <limit effort="15.0" lower="0.0" upper="2.618" velocity="3.0"/>
+    <dynamics damping="0.01" friction="0.001"/>
   </joint>
 
   <link name="r_foot">
     <inertial>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <mass value="0.100"/>
-      <inertia ixx="0.0001" ixy="0" ixz="0" iyy="0.0001" iyz="0" izz="0.0001"/>
+      <inertia ixx="0.0001" ixy="0" ixz="0"
+               iyy="0.0001" iyz="0"
+               izz="0.0001"/>
     </inertial>
     <collision>
       <geometry><box size="0.1 0.08 0.02"/></geometry>
@@ -140,37 +259,8 @@
   <joint name="r_ankle" type="fixed">
     <parent link="r_thigh"/>
     <child link="r_foot"/>
-    <origin xyz="0 0 -0.310" rpy="0 0 0"/>
-  </joint>
-<link name="head">
-    <inertial>
-      <origin xyz="0 0 0.05" rpy="0 0 0"/>
-      <mass value="0.2"/>
-      <inertia ixx="0.0001" ixy="0" ixz="0" iyy="0.0001" iyz="0" izz="0.0001"/>
-    </inertial>
-    <visual>
-      <origin xyz="0 0 0.05" rpy="0 0 0"/>
-      <geometry><sphere radius="0.05"/></geometry>
-      <material name="white"><color rgba="1 1 1 1"/></material>
-    </visual>
-  </link>
-
-  <joint name="torso_to_head" type="fixed">
-    <parent link="torso"/>
-    <child link="head"/>
-    <origin xyz="0 0 0.3" rpy="0 0 0"/>
+    <!-- FIX 2: was -0.310, corrected to -0.300 -->
+    <origin xyz="0 0 -0.300" rpy="0 0 0"/>
   </joint>
 
-  <link name="imu_link">
-    <inertial>
-      <mass value="0.01"/>
-      <inertia ixx="1e-5" ixy="0" ixz="0" iyy="1e-5" iyz="0" izz="1e-5"/>
-    </inertial>
-  </link>
-
-  <joint name="head_to_imu" type="fixed">
-    <parent link="head"/>
-    <child link="imu_link"/>
-    <origin xyz="0 0 0" rpy="0 0 0"/> 
-    </joint>
 </robot>
