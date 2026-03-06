@@ -1,1 +1,7 @@
-.DS_Store
+*.tlog
+*.tlog.raw
+eeprom.bin
+glxinfo
+*.sdf~
+__pycache__/
+*.pyc
