@@ -154,7 +154,7 @@
       <axis>
         <xyz>0 1 0</xyz>
         <limit><lower>-1.571</lower><upper>0.523</upper><effort>20</effort><velocity>3</velocity></limit>
-        <dynamics><damping>5.0</damping><friction>0.5</friction></dynamics>
+        <dynamics><damping>0.5</damping><friction>0.5</friction></dynamics>
       </axis>
     </joint>
     <joint name="l_knee" type="revolute">
@@ -162,7 +162,7 @@
       <axis>
         <xyz>0 1 0</xyz>
         <limit><lower>0</lower><upper>2.618</upper><effort>15</effort><velocity>3</velocity></limit>
-        <dynamics><damping>5.0</damping><friction>0.5</friction></dynamics>
+        <dynamics><damping>0.5</damping><friction>0.5</friction></dynamics>
       </axis>
     </joint>
     <joint name="l_knee_shin" type="revolute">
@@ -170,7 +170,7 @@
       <axis>
         <xyz>0 1 0</xyz>
         <limit><lower>0</lower><upper>2.618</upper><effort>15</effort><velocity>3</velocity></limit>
-        <dynamics><damping>5.0</damping><friction>0.5</friction></dynamics>
+        <dynamics><damping>0.5</damping><friction>0.5</friction></dynamics>
       </axis>
     </joint>
     <joint name="l_ankle" type="fixed">
@@ -181,7 +181,7 @@
       <axis>
         <xyz>0 1 0</xyz>
         <limit><lower>-1.571</lower><upper>0.523</upper><effort>20</effort><velocity>3</velocity></limit>
-        <dynamics><damping>5.0</damping><friction>0.5</friction></dynamics>
+        <dynamics><damping>0.5</damping><friction>0.5</friction></dynamics>
       </axis>
     </joint>
     <joint name="r_knee" type="revolute">
@@ -189,7 +189,7 @@
       <axis>
         <xyz>0 1 0</xyz>
         <limit><lower>0</lower><upper>2.618</upper><effort>15</effort><velocity>3</velocity></limit>
-        <dynamics><damping>5.0</damping><friction>0.5</friction></dynamics>
+        <dynamics><damping>0.5</damping><friction>0.5</friction></dynamics>
       </axis>
     </joint>
     <joint name="r_knee_shin" type="revolute">
@@ -197,7 +197,7 @@
       <axis>
         <xyz>0 1 0</xyz>
         <limit><lower>0</lower><upper>2.618</upper><effort>15</effort><velocity>3</velocity></limit>
-        <dynamics><damping>5.0</damping><friction>0.5</friction></dynamics>
+        <dynamics><damping>0.5</damping><friction>0.5</friction></dynamics>
       </axis>
     </joint>
     <joint name="r_ankle" type="fixed">
