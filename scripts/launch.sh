@@ -1,19 +1,13 @@
 #!/bin/bash
-echo "Starting ArduHumanoid SITL..."
-
-# Start ArduPilot with MAVProxy output
-cd ~/ardupilot && Tools/autotest/sim_vehicle.py -v ArduCopter -f gazebo-iris --model JSON --console --out 127.0.0.1:14551 &
-ARDUPILOT_PID=$!
-
-echo "Waiting for ArduPilot to start..."
-sleep 8
-
-# Start Gazebo
-gz sim ~/humanoid-ardupilot-sitl/worlds/ardupilot_humanoid.sdf &
-
-echo "Waiting for Gazebo..."
-sleep 5
-
-# Start balance controller
-cd ~/humanoid-ardupilot-sitl && python3 scripts/balance_controller.py
-
+echo "=== ArduHumanoid SITL Launch ==="
+echo "Open 3 terminals and run:"
+echo ""
+echo "Terminal 1:"
+echo "  cd ~/ardupilot && Tools/autotest/sim_vehicle.py -v ArduCopter -f gazebo-iris --model JSON --console"
+echo "  Then type: output add 127.0.0.1:14551"
+echo ""
+echo "Terminal 2:"
+echo "  gz sim ~/humanoid-ardupilot-sitl/worlds/ardupilot_humanoid.sdf"
+echo ""
+echo "Terminal 3:"
+echo "  python3 ~/humanoid-ardupilot-sitl/scripts/balance_controller.py"
