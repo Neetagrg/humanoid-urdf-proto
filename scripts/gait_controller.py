@@ -28,7 +28,7 @@ print(f"Standing pitch: {math.degrees(STANDING_PITCH):+.1f}°")
 Kp, Ki, Kd = 0.15, 0.001, 0.02
 integral, last_error, last_time = 0, 0, time.time()
 
-HIP_STAND = -0.20
+HIP_STAND = -0.09
 KNEE_STAND = 0.35
 KNEE_LIFT  = 1.40
 HIP_STEP   = 0.30
