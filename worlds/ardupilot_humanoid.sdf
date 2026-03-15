@@ -132,10 +132,25 @@
             <material><ambient>0.2 0.5 0.8 1</ambient><diffuse>0.2 0.5 0.8 1</diffuse></material>
           </visual>
         </link>
+        <!-- l_foot with soft contact -->
         <link name="l_foot">
           <pose>0 0.080 -0.560 0 0 0</pose>
           <inertial><mass>0.100</mass><inertia><ixx>0.0001</ixx><ixy>0</ixy><ixz>0</ixz><iyy>0.0001</iyy><iyz>0</iyz><izz>0.0001</izz></inertia></inertial>
-          <collision name="c"><geometry><box><size>0.12 0.06 0.02</size></box></geometry></collision>
+          <collision name="c"><geometry><box><size>0.12 0.06 0.02</size></box></geometry>
+            <surface>
+              <contact>
+                <ode>
+                  <kp>1000000</kp>
+                  <kd>100</kd>
+                </ode>
+              </contact>
+              <friction>
+                <ode>
+                  <mu>1.0</mu>
+                  <mu2>1.0</mu2>
+                </ode>
+              </friction>
+            </surface></collision>
           <visual name="v">
             <geometry><box><size>0.12 0.06 0.02</size></box></geometry>
             <material><ambient>0.1 0.1 0.1 1</ambient><diffuse>0.1 0.1 0.1 1</diffuse></material>
@@ -171,7 +186,21 @@
         <link name="r_foot">
           <pose>0 -0.080 -0.560 0 0 0</pose>
           <inertial><mass>0.100</mass><inertia><ixx>0.0001</ixx><ixy>0</ixy><ixz>0</ixz><iyy>0.0001</iyy><iyz>0</iyz><izz>0.0001</izz></inertia></inertial>
-          <collision name="c"><geometry><box><size>0.12 0.06 0.02</size></box></geometry></collision>
+          <collision name="c"><geometry><box><size>0.12 0.06 0.02</size></box></geometry>
+            <surface>
+              <contact>
+                <ode>
+                  <kp>1000000</kp>
+                  <kd>100</kd>
+                </ode>
+              </contact>
+              <friction>
+                <ode>
+                  <mu>1.0</mu>
+                  <mu2>1.0</mu2>
+                </ode>
+              </friction>
+            </surface></collision>
           <visual name="v">
             <geometry><box><size>0.12 0.06 0.02</size></box></geometry>
             <material><ambient>0.1 0.1 0.1 1</ambient><diffuse>0.1 0.1 0.1 1</diffuse></material>
@@ -235,7 +264,7 @@
           <fdm_addr>127.0.0.1</fdm_addr>
           <fdm_port_in>9002</fdm_port_in>
           <connectionTimeoutMaxCount>5</connectionTimeoutMaxCount>
-          <lock_step>0</lock_step>
+          <lock_step>1</lock_step>
           <modelXYZToAirplaneXForwardZDown degrees="true">0 0 0 180 0 0</modelXYZToAirplaneXForwardZDown>
           <gazeboXYZToNED degrees="true">0 0 0 180 0 90</gazeboXYZToNED>
           <imuName>torso::imu_sensor</imuName>
