@@ -79,4 +79,8 @@ while True:
         send_joint('/r_hip_pitch/cmd', rh)
         send_joint('/l_knee/cmd', lk)
         send_joint('/r_knee/cmd', rk)
+        # Hold ankles flat with balance correction
+        ankle_offset = bal * 0.1
+        send_joint('/l_ankle/cmd', ankle_offset)
+        send_joint('/r_ankle/cmd', ankle_offset)
         print(f"{label:12s} | bal:{bal:+.3f} | LH:{lh:+.2f} RH:{rh:+.2f} LK:{lk:+.2f} RK:{rk:+.2f}")

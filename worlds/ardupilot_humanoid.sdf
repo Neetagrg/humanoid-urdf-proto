@@ -1,15 +1,15 @@
-<?xml version="1.0"?>
+<?xml version='1.0' encoding='utf-8'?>
 <sdf version="1.9">
   <world name="ardupilot_humanoid">
     <physics name="1ms" type="ignore">
       <max_step_size>0.004</max_step_size>
       <real_time_factor>1.0</real_time_factor>
     </physics>
-    <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics"/>
+    <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics" />
     <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors"><render_engine>ogre2</render_engine></plugin>
-    <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands"/>
-    <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster"/>
-    <plugin filename="gz-sim-imu-system" name="gz::sim::systems::Imu"/>
+    <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands" />
+    <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster" />
+    <plugin filename="gz-sim-imu-system" name="gz::sim::systems::Imu" />
     <light type="directional" name="sun">
       <cast_shadows>true</cast_shadows>
       <pose>0 0 10 0 0 0</pose>
@@ -26,7 +26,7 @@
           <material><ambient>0.8 0.8 0.8 1</ambient><diffuse>0.8 0.8 0.8 1</diffuse></material>
         </visual>
       </link>
-    </model>
+        </model>
     <model name="ArduBiped_Proto">
     <static>true</static>
         <pose>0 0 0.6 0 0 0</pose>
@@ -132,7 +132,7 @@
             <material><ambient>0.2 0.5 0.8 1</ambient><diffuse>0.2 0.5 0.8 1</diffuse></material>
           </visual>
         </link>
-        <!-- l_foot with soft contact -->
+        
         <link name="l_foot">
           <pose>0 0.080 -0.560 0 0 0</pose>
           <inertial><mass>0.100</mass><inertia><ixx>0.0001</ixx><ixy>0</ixy><ixz>0</ixz><iyy>0.0001</iyy><iyz>0</iyz><izz>0.0001</izz></inertia></inertial>
@@ -230,9 +230,9 @@
             <dynamics><damping>5.0</damping><friction>0.5</friction></dynamics>
           </axis>
         </joint>
-        <joint name="l_ankle" type="fixed">
-          <parent>l_shin</parent><child>l_foot</child>
-        </joint>
+        <joint name="l_ankle" type="revolute">
+        <parent>l_shin</parent><child>l_foot</child>
+        <axis><xyz>0 1 0</xyz><limit><lower>-0.3</lower><upper>0.3</upper><effort>50</effort><velocity>3</velocity></limit><dynamics><damping>0.1</damping><friction>0.05</friction></dynamics></axis></joint>
         <joint name="r_hip_pitch" type="revolute">
           <parent>torso</parent><child>r_hip_pitch_link</child>
           <axis>
@@ -257,9 +257,9 @@
             <dynamics><damping>5.0</damping><friction>0.5</friction></dynamics>
           </axis>
         </joint>
-        <joint name="r_ankle" type="fixed">
-          <parent>r_shin</parent><child>r_foot</child>
-        </joint>
+        <joint name="r_ankle" type="revolute">
+      <parent>r_shin</parent><child>r_foot</child>
+      <axis><xyz>0 1 0</xyz><limit><lower>-0.3</lower><upper>0.3</upper><effort>50</effort><velocity>3</velocity></limit><dynamics><damping>0.1</damping><friction>0.05</friction></dynamics></axis></joint>
         <plugin name="ArduPilotPlugin" filename="ArduPilotPlugin">
           <fdm_addr>127.0.0.1</fdm_addr>
           <fdm_port_in>9002</fdm_port_in>
@@ -302,12 +302,10 @@
           </control>
         </plugin>
     
-        <plugin filename="gz-sim-joint-state-publisher-system"
-                name="gz::sim::systems::JointStatePublisher">
+        <plugin filename="gz-sim-joint-state-publisher-system" name="gz::sim::systems::JointStatePublisher">
         </plugin>
 
-        <plugin filename="gz-sim-joint-position-controller-system"
-                name="gz::sim::systems::JointPositionController">
+        <plugin filename="gz-sim-joint-position-controller-system" name="gz::sim::systems::JointPositionController">
           <joint_name>l_hip_pitch</joint_name>
           <topic>/l_hip_pitch/cmd</topic>
           <p_gain>2</p_gain>
@@ -316,8 +314,7 @@
           <cmd_max>30</cmd_max>
           <cmd_min>-30</cmd_min>
         </plugin>
-        <plugin filename="gz-sim-joint-position-controller-system"
-                name="gz::sim::systems::JointPositionController">
+        <plugin filename="gz-sim-joint-position-controller-system" name="gz::sim::systems::JointPositionController">
           <joint_name>r_hip_pitch</joint_name>
           <topic>/r_hip_pitch/cmd</topic>
           <p_gain>2</p_gain>
@@ -326,8 +323,7 @@
           <cmd_max>30</cmd_max>
           <cmd_min>-30</cmd_min>
         </plugin>
-        <plugin filename="gz-sim-joint-position-controller-system"
-                name="gz::sim::systems::JointPositionController">
+        <plugin filename="gz-sim-joint-position-controller-system" name="gz::sim::systems::JointPositionController">
           <joint_name>l_knee</joint_name>
           <topic>/l_knee/cmd</topic>
           <p_gain>2</p_gain>
@@ -336,10 +332,28 @@
           <cmd_max>30</cmd_max>
           <cmd_min>-30</cmd_min>
         </plugin>
-        <plugin filename="gz-sim-joint-position-controller-system"
-                name="gz::sim::systems::JointPositionController">
+        <plugin filename="gz-sim-joint-position-controller-system" name="gz::sim::systems::JointPositionController">
           <joint_name>r_knee</joint_name>
           <topic>/r_knee/cmd</topic>
+          <p_gain>2</p_gain>
+          <i_gain>0.01</i_gain>
+          <d_gain>0.1</d_gain>
+          <cmd_max>30</cmd_max>
+          <cmd_min>-30</cmd_min>
+        </plugin>
+
+        <plugin filename="gz-sim-joint-position-controller-system" name="gz::sim::systems::JointPositionController">
+          <joint_name>l_ankle</joint_name>
+          <topic>/l_ankle/cmd</topic>
+          <p_gain>2</p_gain>
+          <i_gain>0.01</i_gain>
+          <d_gain>0.1</d_gain>
+          <cmd_max>30</cmd_max>
+          <cmd_min>-30</cmd_min>
+        </plugin>
+        <plugin filename="gz-sim-joint-position-controller-system" name="gz::sim::systems::JointPositionController">
+          <joint_name>r_ankle</joint_name>
+          <topic>/r_ankle/cmd</topic>
           <p_gain>2</p_gain>
           <i_gain>0.01</i_gain>
           <d_gain>0.1</d_gain>
