@@ -209,8 +209,13 @@
             <dynamics><damping>5.0</damping><friction>1.5</friction><friction>0.5</friction></dynamics>
           </axis>
         </joint>
-        <joint name="l_ankle" type="fixed">
+        <joint name="l_ankle" type="revolute">
           <parent>l_shin</parent><child>l_foot</child>
+          <axis>
+            <xyz>0 1 0</xyz>
+            <limit><lower>-0.523</lower><upper>0.523</upper><effort>50</effort><velocity>3</velocity></limit>
+            <dynamics><damping>2.0</damping><friction>0.5</friction></dynamics>
+          </axis>
         </joint>
         <joint name="r_hip_pitch" type="revolute">
           <parent>torso</parent><child>r_hip_pitch_link</child>
@@ -236,8 +241,13 @@
             <dynamics><damping>5.0</damping><friction>1.5</friction><friction>0.5</friction></dynamics>
           </axis>
         </joint>
-        <joint name="r_ankle" type="fixed">
+        <joint name="r_ankle" type="revolute">
           <parent>r_shin</parent><child>r_foot</child>
+          <axis>
+            <xyz>0 1 0</xyz>
+            <limit><lower>-0.523</lower><upper>0.523</upper><effort>50</effort><velocity>3</velocity></limit>
+            <dynamics><damping>2.0</damping><friction>0.5</friction></dynamics>
+          </axis>
         </joint>
         <plugin name="ArduPilotPlugin" filename="ArduPilotPlugin">
           <fdm_addr>127.0.0.1</fdm_addr>
@@ -278,6 +288,22 @@
             <p_gain>8</p_gain>
             <servo_min>1000</servo_min><servo_max>2000</servo_max>
             <multiplier>2.618</multiplier><offset>-0.5</offset>
+          </control>
+          <control channel="4">
+            <jointName>l_ankle</jointName>
+            <type>COMMAND</type>
+            <cmd_topic>/l_ankle/cmd</cmd_topic>
+            <p_gain>8</p_gain>
+            <servo_min>1000</servo_min><servo_max>2000</servo_max>
+            <multiplier>1.047</multiplier><offset>0.0</offset>
+          </control>
+          <control channel="5">
+            <jointName>r_ankle</jointName>
+            <type>COMMAND</type>
+            <cmd_topic>/r_ankle/cmd</cmd_topic>
+            <p_gain>8</p_gain>
+            <servo_min>1000</servo_min><servo_max>2000</servo_max>
+            <multiplier>1.047</multiplier><offset>0.0</offset>
           </control>
         </plugin>
     
@@ -328,6 +354,28 @@
           <d_gain>10.0</d_gain>
           <cmd_max>30</cmd_max>
           <cmd_min>-30</cmd_min>
+        </plugin>
+        <plugin filename="gz-sim-joint-position-controller-system"
+                name="gz::sim::systems::JointPositionController">
+          <joint_name>l_ankle</joint_name>
+          <topic>/l_ankle/cmd</topic>
+          <initial_position>0.0</initial_position>
+          <p_gain>8</p_gain>
+          <i_gain>0.01</i_gain>
+          <d_gain>0.5</d_gain>
+          <cmd_max>5</cmd_max>
+          <cmd_min>-5</cmd_min>
+        </plugin>
+        <plugin filename="gz-sim-joint-position-controller-system"
+                name="gz::sim::systems::JointPositionController">
+          <joint_name>r_ankle</joint_name>
+          <topic>/r_ankle/cmd</topic>
+          <initial_position>0.0</initial_position>
+          <p_gain>8</p_gain>
+          <i_gain>0.01</i_gain>
+          <d_gain>0.5</d_gain>
+          <cmd_max>5</cmd_max>
+          <cmd_min>-5</cmd_min>
         </plugin>
       </model>
   </world>
