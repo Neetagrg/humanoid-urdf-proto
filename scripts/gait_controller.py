@@ -68,6 +68,19 @@ for _ in range(20):
 STANDING_PITCH = sum(samples) / len(samples) if samples else 0.0
 print(f"Standing pitch: {math.degrees(STANDING_PITCH):+.1f}°")
 
+<<<<<<< Updated upstream
+=======
+Kp, Ki, Kd = 0.40, 0.003, 0.05
+integral, last_error, last_time = 0, 0, time.time()
+
+HIP_STAND = -0.45
+KNEE_STAND = 0.35
+KNEE_LIFT  = 1.00
+HIP_STEP   = 0.15
+DURATION   = 2.5
+
+# Penguin gait - no lateral shift, alternate knee lift with hip pitch
+>>>>>>> Stashed changes
 gait_phases = [
     (HIP_STAND,          HIP_STAND,          KNEE_STAND, KNEE_STAND, "STAND"),
     (HIP_STAND-0.05,     HIP_STAND+0.05,     KNEE_STAND, KNEE_STAND, "SHIFT_R"),
@@ -105,12 +118,39 @@ while True:
         continue
 
     now = time.time()
+<<<<<<< Updated upstream
     dt = max(now - last_time, 0.01)
     bal = balance(msg.pitch - STANDING_PITCH, dt)
     last_time = now
 
     lh0, rh0, lk, rk, name = gait_phases[phase % len(gait_phases)]
     elapsed = time.time() - phase_start
+=======
+    if msg:
+        pitch = msg.pitch
+        dt = max(now - last_time, 0.01)
+        error = pitch - STANDING_PITCH
+        integral = max(-0.5, min(0.5, integral + error * dt))
+        derivative = (error - last_error) / dt
+        bal = max(-0.5, min(0.5, Kp*error + Ki*integral + Kd*derivative))
+        last_error, last_time = error, now
+
+        if not gait_active:
+            lh = rh = HIP_STAND - bal
+            lk = rk = KNEE_STAND
+            label = "STABILIZE"
+            if now - phase_start > 1.0:
+                gait_active = True
+                phase_start = now
+                print("Gait starting!")
+        else:
+            if now - phase_start > DURATION:
+                gait_step = (gait_step + 1) % len(gait_phases)
+                phase_start = now
+            lh, rh, lk, rk, label = gait_phases[gait_step]
+            lh -= bal
+            rh -= bal
+>>>>>>> Stashed changes
 
     if elapsed >= DURATION:
         phase += 1
