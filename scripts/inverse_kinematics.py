@@ -22,7 +22,7 @@ class LegIKSolver:
             q1 = np.clip(q1 + lean, -1.57, 0.52)
         return {
             'hip_roll':  float(np.clip(hip_roll, -0.4, 0.4)),
-            'hip_pitch': float(q1),
+            'hip_pitch': float(-q1),
             'knee':      float(q2),
             'ankle':     float(ankle),
         }
