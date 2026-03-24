@@ -20,7 +20,7 @@ DT = 0.02
 COM_HEIGHT = 0.38
 PREVIEW_HORIZON = 20
 STEP_LENGTH = 0.08
-FOOT_SEP = 0.08
+FOOT_SEP = 0.11
 STEP_DURATION = 0.8
 DS_DURATION = 0.1
 SWING_HEIGHT = 0.04
@@ -87,7 +87,7 @@ def main():
     print("Holding stand 3s...")
     t0 = time.time()
     while time.time() - t0 < 3.0:
-        send_pose(0.0, 0.0, 0.0, 0.0)
+        send_pose(-0.09, -0.09, 0.35, 0.35)
         time.sleep(DT)
 
     print(f"Walking {N_STEPS} steps...")
@@ -151,7 +151,7 @@ def main():
 
     print("\nDone. Returning to stand...")
     for _ in range(50):
-        send_pose(0.0, 0.0, 0.0, 0.0)
+        send_pose(-0.09, -0.09, 0.35, 0.35)
         time.sleep(DT)
 
 if __name__ == '__main__':
