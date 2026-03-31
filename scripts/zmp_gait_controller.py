@@ -49,7 +49,7 @@ def send_pose(l_hip, r_hip, l_knee, r_knee):
 
 def ik(foot_x, foot_z=0.0):
     h = np.clip(COM_HEIGHT - foot_z, 0.01, 2*L - 0.001)
-    q_hip = np.arctan2(foot_x, h)
+    q_hip = -np.arctan2(foot_x, h)
     return float(q_hip), 0.0
 
 # Attitude from ArduPilot

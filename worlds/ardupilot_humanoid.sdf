@@ -240,12 +240,7 @@
           <parent>r_shin</parent><child>r_foot</child>
         </joint>
         
-    <plugin name="<plugin name="ArduPilotPlugin" filename="libArduPilotPlugin.so">
-  <fdm_addr>127.0.0.1</fdm_addr>
-  <fdm_port_in>9002</fdm_port_in>
-  <fdm_port_out>9003</fdm_port_out>
-  ...
-</plugin>ArduPilotPlugin" filename="ArduPilotPlugin">
+    <plugin name="ArduPilotPlugin" filename="ArduPilotPlugin">
           <fdm_addr>127.0.0.1</fdm_addr>
           <fdm_port_in>9002</fdm_port_in>
           <connectionTimeoutMaxCount>5</connectionTimeoutMaxCount>
