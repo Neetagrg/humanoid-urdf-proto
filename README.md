@@ -1,5 +1,5 @@
 cat > ~/humanoid-ardupilot-sitl/README.md << 'EOF'
-# ArduHumanoid SITL — Minimal Biped for ArduPilot
+# ArduHumanoid SITL - Minimal Biped for ArduPilot
 
 [![Gazebo Harmonic](https://img.shields.io/badge/Gazebo-Harmonic-blue)](https://gazebosim.org)
 [![ArduPilot](https://img.shields.io/badge/ArduPilot-SITL-green)](https://ardupilot.org)
