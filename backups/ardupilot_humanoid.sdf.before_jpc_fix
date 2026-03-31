@@ -240,12 +240,7 @@
           <parent>r_shin</parent><child>r_foot</child>
         </joint>
         
-    <plugin name="<plugin name="ArduPilotPlugin" filename="libArduPilotPlugin.so">
-  <fdm_addr>127.0.0.1</fdm_addr>
-  <fdm_port_in>9002</fdm_port_in>
-  <fdm_port_out>9003</fdm_port_out>
-  ...
-</plugin>ArduPilotPlugin" filename="ArduPilotPlugin">
+    <plugin name="ArduPilotPlugin" filename="ArduPilotPlugin">
           <fdm_addr>127.0.0.1</fdm_addr>
           <fdm_port_in>9002</fdm_port_in>
           <connectionTimeoutMaxCount>5</connectionTimeoutMaxCount>
@@ -292,44 +287,36 @@
           <joint_name>l_hip_pitch</joint_name>
           <topic>/l_hip_pitch/cmd</topic>
           <initial_position>-0.09</initial_position>
-          <p_gain>80</p_gain>
-          <d_gain>8</d_gain>
-          <i_gain>0</i_gain>
-          <cmd_max>200</cmd_max>
-          <cmd_min>-200</cmd_min>
+          <p_gain>3</p_gain>
+          <cmd_max>30</cmd_max>
+          <cmd_min>-30</cmd_min>
         </plugin>
         <plugin filename="gz-sim-joint-position-controller-system"
                 name="gz::sim::systems::JointPositionController">
           <joint_name>r_hip_pitch</joint_name>
           <topic>/r_hip_pitch/cmd</topic>
           <initial_position>-0.09</initial_position>
-          <p_gain>80</p_gain>
-          <d_gain>8</d_gain>
-          <i_gain>0</i_gain>
-          <cmd_max>200</cmd_max>
-          <cmd_min>-200</cmd_min>
+          <p_gain>3</p_gain>
+          <cmd_max>30</cmd_max>
+          <cmd_min>-30</cmd_min>
         </plugin>
         <plugin filename="gz-sim-joint-position-controller-system"
                 name="gz::sim::systems::JointPositionController">
-          <joint_name>l_knee_shin</joint_name>
+          <joint_name>l_knee</joint_name>
           <topic>/l_knee/cmd</topic>
           <initial_position>0.35</initial_position>
-          <p_gain>120</p_gain>
-          <d_gain>12</d_gain>
-          <i_gain>0</i_gain>
-          <cmd_max>200</cmd_max>
-          <cmd_min>-200</cmd_min>
+          <p_gain>3</p_gain>
+          <cmd_max>30</cmd_max>
+          <cmd_min>-30</cmd_min>
         </plugin>
         <plugin filename="gz-sim-joint-position-controller-system"
                 name="gz::sim::systems::JointPositionController">
-          <joint_name>r_knee_shin</joint_name>
+          <joint_name>r_knee</joint_name>
           <topic>/r_knee/cmd</topic>
           <initial_position>0.35</initial_position>
-          <p_gain>120</p_gain>
-          <d_gain>12</d_gain>
-          <i_gain>0</i_gain>
-          <cmd_max>200</cmd_max>
-          <cmd_min>-200</cmd_min>
+          <p_gain>3</p_gain>
+          <cmd_max>30</cmd_max>
+          <cmd_min>-30</cmd_min>
         </plugin>
         <plugin filename="gz-sim-apply-joint-force-system"
                 name="gz::sim::systems::ApplyJointForce">
