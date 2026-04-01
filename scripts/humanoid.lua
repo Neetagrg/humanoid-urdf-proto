@@ -1,12 +1,12 @@
 -- humanoid.lua
 -- Bipedal walking gait controller for ArduPilot Rover SITL
 local THIGH_LEN=200.0; local SHIN_LEN=200.0; local LEG_LEN=400.0
-local CH_L_HIP=0; local CH_L_KNEE=1; local CH_L_ANKLE=2
-local CH_R_HIP=3; local CH_R_KNEE=4; local CH_R_ANKLE=5
+local CH_L_HIP=0; local CH_R_HIP=1; local CH_L_KNEE=2
+local CH_R_KNEE=3; local CH_L_ANKLE=4; local CH_R_ANKLE=5
 local PWM_NEUTRAL=1500; local PWM_MIN=1000; local PWM_MAX=2000
 local PWM_SCALE=500.0/(math.pi*0.5); local PWM_TIMEOUT=100
 local STEP_HEIGHT=40.0; local STEP_LENGTH=55.0
-local PHASE_DUR_MS=350; local LOOP_PERIOD_MS=20
+local PHASE_DUR_MS=600; local LOOP_PERIOD_MS=20
 local ZMP_ANKLE_LOAD=0.12; local ZMP_ANKLE_UNLOAD=-0.10
 local S_STAND=0; local S_SHIFT_RIGHT=1; local S_SWING_LEFT=2
 local S_PLANT_LEFT=3; local S_SHIFT_LEFT=4; local S_SWING_RIGHT=5
@@ -38,12 +38,12 @@ local function stand_pose()
   set_joints(hip,knee,ankle,hip,knee,ankle)
 end
 local function update()
-  if not arming:is_armed() then stand_pose(); gait_state=S_STAND; phase_start_ms=millis(); return update,LOOP_PERIOD_MS end
+  if not arming:is_armed() then stand_pose(); gait_state=S_STAND; phase_start_ms=millis():tofloat(); return update,LOOP_PERIOD_MS end
   local thr=rc:get_pwm(3); local walking=(thr~=nil)and(thr>1550)
-  if not walking then stand_pose(); gait_state=S_STAND; phase_start_ms=millis(); return update,LOOP_PERIOD_MS end
-  local now=millis(); local elapsed=now-phase_start_ms
+  if not walking then stand_pose(); gait_state=S_STAND; phase_start_ms=millis():tofloat(); return update,LOOP_PERIOD_MS end
+  local now=millis():tofloat(); local elapsed=now-phase_start_ms
   if gait_state==S_STAND then gait_state=S_SHIFT_RIGHT; phase_start_ms=now; elapsed=0 end
-  local t_raw=elapsed/PHASE_DUR_MS; local t=smoothstep(t_raw)
+  local t_raw=elapsed/(PHASE_DUR_MS*1.0); local t=smoothstep(t_raw)
   if gait_state==S_SHIFT_RIGHT then
     local hip,knee=solve_ik(0,LEG_LEN)
     set_joints(hip,knee,lerp(0,ZMP_ANKLE_UNLOAD,t),hip,knee,lerp(0,ZMP_ANKLE_LOAD,t))
@@ -74,5 +74,5 @@ local function update()
   return update,LOOP_PERIOD_MS
 end
 gcs:send_text(6,"humanoid.lua loaded")
-phase_start_ms=millis()
+phase_start_ms=millis():tofloat()
 return update,500

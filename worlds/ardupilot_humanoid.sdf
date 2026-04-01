@@ -190,66 +190,84 @@
           <axis>
             <xyz>0 1 0</xyz>
             <limit><lower>-1.571</lower><upper>0.523</upper><effort>200</effort><velocity>3</velocity></limit>
-            <dynamics><damping>5.0</damping><friction>0.5</friction></dynamics>
-          </axis>
+          
+          <dynamics><damping>20.0</damping><friction>5.0</friction><spring_stiffness>500.0</spring_stiffness><spring_reference>0</spring_reference></dynamics>
+        </axis>
         </joint>
         <joint name="l_knee" type="revolute">
           <parent>l_hip_pitch_link</parent><child>l_thigh</child>
           <axis>
             <xyz>0 1 0</xyz>
             <limit><lower>0</lower><upper>2.618</upper><effort>200</effort><velocity>3</velocity></limit>
-            <dynamics><damping>5.0</damping><friction>0.5</friction></dynamics>
-          </axis>
+          
+          <dynamics><damping>20.0</damping><friction>5.0</friction><spring_stiffness>500.0</spring_stiffness><spring_reference>0</spring_reference></dynamics>
+        </axis>
         </joint>
         <joint name="l_knee_shin" type="revolute">
           <parent>l_thigh</parent><child>l_shin</child>
           <axis>
             <xyz>0 1 0</xyz>
             <limit><lower>0</lower><upper>2.618</upper><effort>200</effort><velocity>3</velocity></limit>
-            <dynamics><damping>5.0</damping><friction>0.5</friction></dynamics>
-          </axis>
+          
+          <dynamics><damping>20.0</damping><friction>5.0</friction><spring_stiffness>500.0</spring_stiffness><spring_reference>0</spring_reference></dynamics>
+        </axis>
         </joint>
-        <joint name="l_ankle" type="fixed">
+        <joint name="l_ankle" type="revolute">
           <parent>l_shin</parent><child>l_foot</child>
+          <axis>
+            <xyz>0 1 0</xyz>
+            <limit><lower>-0.5</lower><upper>0.5</upper><effort>100</effort><velocity>3</velocity></limit>
+          
+          <dynamics><damping>20.0</damping><friction>5.0</friction><spring_stiffness>500.0</spring_stiffness><spring_reference>0</spring_reference></dynamics>
+        </axis>
         </joint>
         <joint name="r_hip_pitch" type="revolute">
           <parent>torso</parent><child>r_hip_pitch_link</child>
           <axis>
             <xyz>0 1 0</xyz>
             <limit><lower>-1.571</lower><upper>0.523</upper><effort>200</effort><velocity>3</velocity></limit>
-            <dynamics><damping>5.0</damping><friction>0.5</friction></dynamics>
-          </axis>
+          
+          <dynamics><damping>20.0</damping><friction>5.0</friction><spring_stiffness>500.0</spring_stiffness><spring_reference>0</spring_reference></dynamics>
+        </axis>
         </joint>
         <joint name="r_knee" type="revolute">
           <parent>r_hip_pitch_link</parent><child>r_thigh</child>
           <axis>
             <xyz>0 1 0</xyz>
             <limit><lower>0</lower><upper>2.618</upper><effort>200</effort><velocity>3</velocity></limit>
-            <dynamics><damping>5.0</damping><friction>0.5</friction></dynamics>
-          </axis>
+          
+          <dynamics><damping>20.0</damping><friction>5.0</friction><spring_stiffness>500.0</spring_stiffness><spring_reference>0</spring_reference></dynamics>
+        </axis>
         </joint>
         <joint name="r_knee_shin" type="revolute">
           <parent>r_thigh</parent><child>r_shin</child>
           <axis>
             <xyz>0 1 0</xyz>
             <limit><lower>0</lower><upper>2.618</upper><effort>200</effort><velocity>3</velocity></limit>
-            <dynamics><damping>5.0</damping><friction>0.5</friction></dynamics>
-          </axis>
+          
+          <dynamics><damping>20.0</damping><friction>5.0</friction><spring_stiffness>500.0</spring_stiffness><spring_reference>0</spring_reference></dynamics>
+        </axis>
         </joint>
-        <joint name="r_ankle" type="fixed">
+        <joint name="r_ankle" type="revolute">
           <parent>r_shin</parent><child>r_foot</child>
+          <axis>
+            <xyz>0 1 0</xyz>
+            <limit><lower>-0.5</lower><upper>0.5</upper><effort>100</effort><velocity>3</velocity></limit>
+          
+          <dynamics><damping>20.0</damping><friction>5.0</friction><spring_stiffness>500.0</spring_stiffness><spring_reference>0</spring_reference></dynamics>
+        </axis>
         </joint>
         <plugin name="ArduPilotPlugin" filename="ArduPilotPlugin">
           <fdm_addr>127.0.0.1</fdm_addr>
           <fdm_port_in>9002</fdm_port_in>
           <connectionTimeoutMaxCount>5</connectionTimeoutMaxCount>
-          <lock_step>1</lock_step>
+          <lock_step>0</lock_step>
           <modelXYZToAirplaneXForwardZDown degrees="true">0 0 0 180 0 0</modelXYZToAirplaneXForwardZDown>
           <gazeboXYZToNED degrees="true">0 0 0 180 0 90</gazeboXYZToNED>
           <imuName>torso::imu_sensor</imuName>
           <control channel="0">
             <jointName>l_hip_pitch</jointName>
-            <type>COMMAND</type>
+            <type>POSITION</type>
             <cmd_topic>/l_hip_pitch/cmd</cmd_topic>
             <p_gain>3</p_gain>
             <servo_min>1000</servo_min><servo_max>2000</servo_max>
@@ -257,7 +275,7 @@
           </control>
           <control channel="1">
             <jointName>r_hip_pitch</jointName>
-            <type>COMMAND</type>
+            <type>POSITION</type>
             <cmd_topic>/r_hip_pitch/cmd</cmd_topic>
             <p_gain>3</p_gain>
             <servo_min>1000</servo_min><servo_max>2000</servo_max>
@@ -265,7 +283,7 @@
           </control>
           <control channel="2">
             <jointName>l_knee_shin</jointName>
-            <type>COMMAND</type>
+            <type>POSITION</type>
             <cmd_topic>/l_knee/cmd</cmd_topic>
             <p_gain>3</p_gain>
             <servo_min>1000</servo_min><servo_max>2000</servo_max>
@@ -273,7 +291,7 @@
           </control>
           <control channel="3">
             <jointName>r_knee_shin</jointName>
-            <type>COMMAND</type>
+            <type>POSITION</type>
             <cmd_topic>/r_knee/cmd</cmd_topic>
             <p_gain>3</p_gain>
             <servo_min>1000</servo_min><servo_max>2000</servo_max>
