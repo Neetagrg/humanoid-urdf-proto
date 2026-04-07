@@ -191,7 +191,10 @@
             <xyz>0 1 0</xyz>
             <limit><lower>-1.571</lower><upper>0.523</upper><effort>200</effort><velocity>3</velocity></limit>
           
-          <dynamics><damping>20.0</damping><friction>5.0</friction><spring_stiffness>500.0</spring_stiffness><spring_reference>0</spring_reference></dynamics>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
         </axis>
         </joint>
         <joint name="l_knee" type="revolute">
@@ -227,7 +230,10 @@
             <xyz>0 1 0</xyz>
             <limit><lower>-1.571</lower><upper>0.523</upper><effort>200</effort><velocity>3</velocity></limit>
           
-          <dynamics><damping>20.0</damping><friction>5.0</friction><spring_stiffness>500.0</spring_stiffness><spring_reference>0</spring_reference></dynamics>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
         </axis>
         </joint>
         <joint name="r_knee" type="revolute">
